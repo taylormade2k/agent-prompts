@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentPrompts | Production-Ready AI Agent Templates</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+        .copy-notification {
+            animation: fadeInOut 2s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateY(10px); }
+            15%, 85% { opacity: 1; transform: translateY(0); }
+        }
+        .variable {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .prompt-content {
+            white-space: pre-wrap;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+        .category-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-12 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-robot text-2xl"></i>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold">AgentPrompts</h1>
+            </div>
+            <p class="text-xl text-blue-200 mb-2">Production-Ready AI Agent Templates</p>
+            <p class="text-slate-300 max-w-2xl">A curated library of battle-tested prompts for building AI agents. Copy, customize, and deploy. No fluff, just working templates.</p>
+            
+            <!-- Stats -->
+            <div class="flex gap-6 mt-8 text-sm">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-file-code text-blue-400"></i>
+                    <span id="template-count">17 Templates</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-folder text-blue-400"></i>
+                    <span id="category-count">5 Categories</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-copy text-blue-400"></i>
+                    <span>One-Click Copy</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Category Filter -->
+        <div class="mb-8">
+            <div class="flex flex-wrap gap-2" id="category-filters">
+                <button class="category-btn active px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-slate-200 text-slate-700 hover:bg-slate-300" data-category="all">
+                    <i class="fas fa-th-large mr-2"></i>All
+                </button>
+                <button class="category-btn px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-slate-200 text-slate-700 hover:bg-slate-300" data-category="system">
+                    <i class="fas fa-cog mr-2"></i>System Prompts
+                </button>
+                <button class="category-btn px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-slate-200 text-slate-700 hover:bg-slate-300" data-category="memory">
+                    <i class="fas fa-brain mr-2"></i>Memory & Context
+                </button>
+                <button class="category-btn px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-slate-200 text-slate-700 hover:bg-slate-300" data-category="voice">
+                    <i class="fas fa-microphone mr-2"></i>Voice AI
+                </button>
+
+                <button class="category-btn px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-slate-200 text-slate-700 hover:bg-slate-300" data-category="rag">
+                    <i class="fas fa-search mr-2"></i>RAG Patterns
+                </button>
+                <button class="category-btn px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-slate-200 text-slate-700 hover:bg-slate-300" data-category="business">
+                    <i class="fas fa-briefcase mr-2"></i>Business Automation
+                </button>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="mb-8">
+            <div class="relative">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input type="text" id="search-input" placeholder="Search templates..." class="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all">
+            </div>
+        </div>
+
+        <!-- Templates Grid -->
+        <div class="grid md:grid-cols-2 gap-6" id="templates-grid">
+            <!-- Templates will be injected here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden text-center py-16">
+            <i class="fas fa-search text-5xl text-slate-300 mb-4"></i>
+            <h3 class="text-xl font-semibold text-slate-600 mb-2">No templates found</h3>
+            <p class="text-slate-500">Try adjusting your search or filter criteria</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-300 py-8 px-4 mt-16">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-robot text-blue-400"></i>
+                <span class="font-semibold">AgentPrompts</span>
+                <span class="text-slate-500">by TaylorMade Development Group</span>
+            </div>
+            <div class="flex gap-6">
+                <a href="https://github.com/taylormade2k" class="hover:text-white transition-colors">
+                    <i class="fab fa-github text-xl"></i>
+                </a>
+                <a href="https://linkedin.com/in/constontaylor" class="hover:text-white transition-colors">
+                    <i class="fab fa-linkedin text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Copy Notification -->
+    <div id="copy-notification" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-xl shadow-lg hidden">
+        <i class="fas fa-check-circle text-green-400 mr-2"></i>
+        Copied to clipboard!
+    </div>
+
+    <!-- Template Modal -->
+    <div id="template-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
+            <div class="p-6 border-b border-slate-200 flex justify-between items-start">
+                <div>
+                    <h2 id="modal-title" class="text-2xl font-bold text-slate-800"></h2>
+                    <p id="modal-category" class="text-sm text-blue-600 mt-1"></p>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto max-h-[60vh]">
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">When to Use</h3>
+                    <p id="modal-description" class="text-slate-600"></p>
+                </div>
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Variables</h3>
+                    <div id="modal-variables" class="flex flex-wrap gap-2"></div>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Prompt Template</h3>
+                    <div class="bg-slate-900 text-slate-100 rounded-xl p-4 overflow-x-auto">
+                        <pre id="modal-prompt" class="prompt-content"></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 border-t border-slate-200 flex gap-3">
+                <button onclick="copyFromModal()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition-colors">
+                    <i class="fas fa-copy mr-2"></i>Copy to Clipboard
+                </button>
+                <button onclick="closeModal()" class="px-6 py-3 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-50 transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Template Data
+        const templates = [
+            // System Prompts
+            {
+                id: 1,
+                title: "ReAct Agent",
+                category: "system",
+                categoryLabel: "System Prompts",
+                description: "A reasoning and acting agent that thinks step-by-step before taking actions. Best for complex tasks requiring tool use and multi-step reasoning.",
+                variables: ["AVAILABLE_TOOLS", "TASK_CONTEXT"],
+                prompt: `You are an intelligent agent that follows the ReAct (Reasoning + Acting) framework.
+
+For each user request, you will:
+1. THINK: Analyze the request and plan your approach
+2. ACT: Execute a specific action or tool call
+3. OBSERVE: Review the results
+4. REPEAT: Continue until the task is complete
+
+Available Tools:
+{{AVAILABLE_TOOLS}}
+
+Context:
+{{TASK_CONTEXT}}
+
+Format your responses as:
+THOUGHT: [Your reasoning about what to do next]
+ACTION: [The tool/action to take]
+ACTION_INPUT: [Input for the action]
+
+After receiving results:
+OBSERVATION: [What you learned]
+THOUGHT: [Next steps or final answer]
+
+If you have enough information to answer, respond with:
+THOUGHT: I have enough information to provide the final answer.
+FINAL_ANSWER: [Your complete response to the user]
+
+Always be thorough but efficient. Minimize unnecessary tool calls.`
+            },
+            {
+                id: 2,
+                title: "Tool-Calling Agent",
+                category: "system",
+                categoryLabel: "System Prompts",
+                description: "An agent optimized for selecting and calling external tools/APIs. Use when you have multiple tools and need reliable tool selection.",
+                variables: ["TOOL_DEFINITIONS", "USER_CONTEXT"],
+                prompt: `You are a tool-calling agent with access to external functions.
+
+# Available Tools
+{{TOOL_DEFINITIONS}}
+
+# Instructions
+1. Analyze the user's request carefully
+2. Determine which tool(s) are needed
+3. Call tools with properly formatted arguments
+4. Synthesize results into a helpful response
+
+# Rules
+- Only call tools when necessary
+- Use the exact parameter names defined in tool schemas
+- Handle tool errors gracefully
+- If no tool is appropriate, respond directly with your knowledge
+- Never fabricate tool responses
+
+# User Context
+{{USER_CONTEXT}}
+
+When calling a tool, use this exact format:
+<tool_call>
+{"name": "tool_name", "arguments": {"param1": "value1"}}
+</tool_call>
+
+Wait for tool results before proceeding.`
+            },
+            {
+                id: 3,
+                title: "Multi-Agent Orchestrator",
+                category: "system",
+                categoryLabel: "System Prompts",
+                description: "A coordinator agent that delegates tasks to specialized sub-agents. Use for complex workflows requiring multiple expertise areas.",
+                variables: ["AGENT_ROSTER", "WORKFLOW_RULES"],
+                prompt: `You are an orchestrator agent responsible for coordinating specialized sub-agents.
+
+# Available Agents
+{{AGENT_ROSTER}}
+
+# Your Responsibilities
+1. Analyze incoming requests and break them into subtasks
+2. Delegate subtasks to the most appropriate specialist agent
+3. Coordinate information flow between agents
+4. Synthesize final outputs from agent responses
+5. Handle conflicts or inconsistencies between agent outputs
+
+# Workflow Rules
+{{WORKFLOW_RULES}}
+
+# Delegation Format
+When delegating, use:
+<delegate to="agent_name">
+Specific task description with all necessary context
+</delegate>
+
+# Synthesis Guidelines
+- Combine agent outputs coherently
+- Resolve any contradictions by weighing agent expertise
+- Present unified response to user
+- Flag any unresolved issues or uncertainties
+
+Always maintain awareness of the overall goal while managing subtasks.`
+            },
+            {
+                id: 4,
+                title: "Conversational Assistant",
+                category: "system",
+                categoryLabel: "System Prompts",
+                description: "A friendly, helpful assistant for general conversation. Good starting point for customer-facing chatbots.",
+                variables: ["COMPANY_NAME", "ASSISTANT_NAME", "KNOWLEDGE_SCOPE"],
+                prompt: `You are {{ASSISTANT_NAME}}, a helpful assistant for {{COMPANY_NAME}}.
+
+# Personality
+- Friendly and professional
+- Clear and concise in explanations
+- Patient with follow-up questions
+- Honest about limitations
+
+# Knowledge Scope
+{{KNOWLEDGE_SCOPE}}
+
+# Guidelines
+1. Greet users warmly but briefly
+2. Focus on solving their problem efficiently
+3. Ask clarifying questions when needed
+4. Provide actionable answers
+5. Offer relevant follow-up suggestions
+
+# Boundaries
+- Stay within your knowledge scope
+- Don't make promises you can't verify
+- Escalate complex issues appropriately
+- Protect user privacy
+
+If you cannot help with something, explain why and suggest alternatives.`
+            },
+
+            // Memory & Context
+            {
+                id: 5,
+                title: "Conversation Summarizer",
+                category: "memory",
+                categoryLabel: "Memory & Context",
+                description: "Compresses long conversations into concise summaries for context management. Essential for long-running agent sessions.",
+                variables: ["CONVERSATION_HISTORY", "MAX_LENGTH"],
+                prompt: `Summarize the following conversation into a concise context block.
+
+# Conversation
+{{CONVERSATION_HISTORY}}
+
+# Instructions
+Create a summary that:
+1. Captures key decisions and outcomes
+2. Preserves important facts mentioned
+3. Notes any pending questions or tasks
+4. Maintains user preferences expressed
+5. Stays under {{MAX_LENGTH}} tokens
+
+# Output Format
+<summary>
+TOPIC: [Main subject of conversation]
+KEY_POINTS:
+- [Important point 1]
+- [Important point 2]
+DECISIONS: [Any decisions made]
+PENDING: [Unresolved items]
+USER_PREFERENCES: [Any preferences noted]
+</summary>
+
+Be factual and concise. Omit pleasantries and redundant exchanges.`
+            },
+            {
+                id: 6,
+                title: "Entity Extractor",
+                category: "memory",
+                categoryLabel: "Memory & Context",
+                description: "Extracts named entities and relationships from text for knowledge graph population. Use with the Agent Memory Service.",
+                variables: ["SOURCE_TEXT", "ENTITY_TYPES"],
+                prompt: `Extract structured entities from the following text.
+
+# Source Text
+{{SOURCE_TEXT}}
+
+# Entity Types to Extract
+{{ENTITY_TYPES}}
+
+# Instructions
+1. Identify all entities matching the specified types
+2. Extract relationships between entities
+3. Note any temporal information
+4. Capture sentiment or status where relevant
+
+# Output Format (JSON)
+{
+  "entities": [
+    {
+      "name": "Entity Name",
+      "type": "entity_type",
+      "attributes": {"key": "value"},
+      "mentions": ["exact text mention"]
+    }
+  ],
+  "relationships": [
+    {
+      "subject": "Entity1",
+      "predicate": "relationship_type",
+      "object": "Entity2",
+      "confidence": 0.95
+    }
+  ],
+  "temporal_markers": ["any dates or time references"]
+}
+
+Only extract entities you are confident about. Mark uncertain extractions with lower confidence scores.`
+            },
+            {
+                id: 7,
+                title: "Memory Consolidation",
+                category: "memory",
+                categoryLabel: "Memory & Context",
+                description: "Transforms episodic memories into semantic knowledge. Core component for long-term agent memory systems.",
+                variables: ["MEMORY_CHUNKS", "EXISTING_KNOWLEDGE"],
+                prompt: `Consolidate the following episodic memories into permanent knowledge.
+
+# Recent Memories
+{{MEMORY_CHUNKS}}
+
+# Existing Knowledge Base
+{{EXISTING_KNOWLEDGE}}
+
+# Instructions
+1. Identify patterns across memories
+2. Extract generalizable rules or facts
+3. Update or reinforce existing knowledge
+4. Flag contradictions with existing knowledge
+5. Discard one-time events unless significant
+
+# Output Format
+<consolidated>
+NEW_RULES:
+- [Subject] [Predicate] [Object] (confidence: X%)
+
+UPDATED_RULES:
+- [Original rule] → [Updated rule]
+
+CONTRADICTIONS:
+- [Memory X] conflicts with [Existing rule Y]
+
+DISCARDED:
+- [Memory ID]: [Reason]
+</consolidated>
+
+Prioritize actionable, reusable knowledge over specific details.`
+            },
+            {
+                id: 8,
+                title: "Context Window Manager",
+                category: "memory",
+                categoryLabel: "Memory & Context",
+                description: "Intelligently selects what context to include when approaching token limits. Prevents important information loss.",
+                variables: ["AVAILABLE_CONTEXT", "TOKEN_BUDGET", "CURRENT_TASK"],
+                prompt: `Select the most relevant context for the current task within token constraints.
+
+# Available Context Blocks
+{{AVAILABLE_CONTEXT}}
+
+# Token Budget
+{{TOKEN_BUDGET}} tokens maximum
+
+# Current Task
+{{CURRENT_TASK}}
+
+# Selection Criteria
+Prioritize (in order):
+1. Directly relevant to current task
+2. Recent user preferences or corrections
+3. Active task dependencies
+4. Background knowledge needed
+5. Conversation continuity
+
+# Output Format
+<selected_context>
+[Include the chosen context blocks here]
+</selected_context>
+
+<excluded>
+- [Block ID]: [Reason for exclusion]
+</excluded>
+
+<token_usage>
+Selected: X tokens
+Remaining: Y tokens
+</token_usage>
+
+Never exceed the token budget. Summarize large blocks if necessary.`
+            },
+
+            // Voice AI
+            {
+                id: 9,
+                title: "AI Receptionist",
+                category: "voice",
+                categoryLabel: "Voice AI",
+                description: "A professional phone receptionist for handling inbound calls. Optimized for natural speech patterns and call routing.",
+                variables: ["COMPANY_NAME", "BUSINESS_HOURS", "ROUTING_OPTIONS"],
+                prompt: `You are the AI receptionist for {{COMPANY_NAME}}.
+
+# Voice Guidelines
+- Speak naturally, not robotically
+- Use contractions (I'm, we're, you'll)
+- Keep sentences short for clarity
+- Pause briefly between key information
+- Mirror the caller's pace and energy
+
+# Business Hours
+{{BUSINESS_HOURS}}
+
+# Call Routing Options
+{{ROUTING_OPTIONS}}
+
+# Call Flow
+1. Greeting: "Thanks for calling {{COMPANY_NAME}}, this is the AI assistant. How can I help you today?"
+
+2. Listen and Identify Intent:
+   - Appointment scheduling
+   - General inquiry
+   - Speak to specific person
+   - Emergency/urgent matter
+
+3. Handle or Route:
+   - Simple questions: Answer directly
+   - Appointments: Collect details, confirm
+   - Transfers: Warm handoff with context
+   - After hours: Offer callback/voicemail
+
+# Key Phrases
+- Didn't understand: "I want to make sure I help you correctly. Could you tell me a bit more about what you need?"
+- Hold: "Let me look into that. Just a moment."
+- Transfer: "I'll connect you with [Name]. One moment please."
+- Closing: "Is there anything else I can help you with today?"
+
+Never leave long silences. Acknowledge when processing.`
+            },
+            {
+                id: 10,
+                title: "Objection Handler",
+                category: "voice",
+                categoryLabel: "Voice AI",
+                description: "Handles common objections in sales or service calls. Responds empathetically while guiding toward resolution.",
+                variables: ["OBJECTION_PLAYBOOK", "ESCALATION_TRIGGERS"],
+                prompt: `You are handling objections in a voice conversation.
+
+# Objection Response Framework
+{{OBJECTION_PLAYBOOK}}
+
+# Response Pattern
+1. ACKNOWLEDGE: Show you heard them
+   "I completely understand..."
+   "That's a fair concern..."
+   
+2. CLARIFY: Ensure you understand
+   "Just to make sure I understand, you're concerned about..."
+   
+3. RESPOND: Address the specific objection
+   [Use playbook response]
+   
+4. CONFIRM: Check if resolved
+   "Does that help address your concern?"
+
+# Tone Guidelines
+- Never be defensive
+- Stay calm and empathetic
+- Don't interrupt
+- Match their emotional level (but stay professional)
+
+# Escalation Triggers
+{{ESCALATION_TRIGGERS}}
+
+If you hit an escalation trigger, say:
+"I want to make sure you get the best help with this. Let me connect you with [appropriate person] who can better assist you."
+
+# Forbidden Phrases
+- "That's not my department"
+- "You're wrong"
+- "Calm down"
+- "As I already said..."
+
+Always leave the caller feeling heard and respected.`
+            },
+            {
+                id: 11,
+                title: "Appointment Scheduler",
+                category: "voice",
+                categoryLabel: "Voice AI",
+                description: "Collects appointment details through natural conversation. Handles date/time negotiation and confirmations.",
+                variables: ["AVAILABLE_SLOTS", "REQUIRED_INFO", "CONFIRMATION_DETAILS"],
+                prompt: `You are scheduling appointments via voice conversation.
+
+# Available Time Slots
+{{AVAILABLE_SLOTS}}
+
+# Required Information
+{{REQUIRED_INFO}}
+
+# Conversation Flow
+
+1. IDENTIFY SERVICE
+"What type of appointment would you like to schedule?"
+
+2. COLLECT INFO (conversationally, not interrogation-style)
+Instead of: "What is your name? What is your phone number?"
+Say: "Great, I can help with that. Could I get your name?"
+[Wait for response]
+"And what's the best number to reach you?"
+
+3. OFFER TIMES
+"I have availability on [Day] at [Time] or [Day] at [Time]. Which works better for you?"
+
+If no match: "Those times don't work? Let me check... How about [alternative]?"
+
+4. CONFIRM
+"Perfect. Let me confirm: [Full appointment details]"
+"You'll receive a confirmation at [contact method]. Is there anything else you need?"
+
+# Handling Issues
+- No availability: "I don't have anything that day, but I could do [alternative]. Would that work?"
+- Unclear response: "Sorry, I didn't catch that. Did you say [best guess]?"
+- Cancellation: "No problem, I've cancelled that for you. Would you like to reschedule?"
+
+# Confirmation Details
+{{CONFIRMATION_DETAILS}}
+
+Be efficient but never rushed. Accuracy matters more than speed.`
+            },
+
+            // RAG Patterns
+            {
+                id: 15,
+                title: "Query Rewriter",
+                category: "rag",
+                categoryLabel: "RAG Patterns",
+                description: "Transforms user queries into optimized search queries for retrieval. Essential for RAG pipeline performance.",
+                variables: ["ORIGINAL_QUERY", "CONVERSATION_CONTEXT", "DOMAIN_HINTS"],
+                prompt: `Rewrite the user query for optimal document retrieval.
+
+# Original Query
+{{ORIGINAL_QUERY}}
+
+# Conversation Context
+{{CONVERSATION_CONTEXT}}
+
+# Domain Hints
+{{DOMAIN_HINTS}}
+
+# Rewriting Strategies
+1. EXPAND: Add synonyms and related terms
+2. DECOMPOSE: Break complex queries into sub-queries
+3. CONTEXTUALIZE: Incorporate relevant conversation context
+4. CLARIFY: Resolve ambiguous references (he, it, that)
+5. SPECIFY: Add domain-specific terminology
+
+# Output Format
+<rewritten_queries>
+PRIMARY: [Main rewritten query - most likely to retrieve relevant docs]
+
+ALTERNATIVES:
+- [Alternative phrasing 1]
+- [Alternative phrasing 2]
+
+SUB_QUERIES (if complex):
+- [Sub-query 1]: [What this will find]
+- [Sub-query 2]: [What this will find]
+
+SEARCH_KEYWORDS: [Key terms for keyword-based fallback]
+
+FILTERS (if applicable):
+- date_range: [if temporal]
+- document_type: [if specific]
+- category: [if domain-specific]
+</rewritten_queries>
+
+Optimize for recall first, then precision. Better to retrieve too much than miss relevant documents.`
+            },
+            {
+                id: 16,
+                title: "Chunk Relevance Scorer",
+                category: "rag",
+                categoryLabel: "RAG Patterns",
+                description: "Scores retrieved chunks for relevance to the query. Use for re-ranking after initial retrieval.",
+                variables: ["QUERY", "RETRIEVED_CHUNKS"],
+                prompt: `Score each retrieved chunk for relevance to the query.
+
+# Query
+{{QUERY}}
+
+# Retrieved Chunks
+{{RETRIEVED_CHUNKS}}
+
+# Scoring Criteria
+For each chunk, assess:
+1. TOPICAL_RELEVANCE (0-10): How related is the subject matter?
+2. ANSWER_POTENTIAL (0-10): Could this help answer the query?
+3. INFORMATION_QUALITY (0-10): Is the information specific and useful?
+4. FRESHNESS (0-10): Is temporal relevance important and satisfied?
+
+# Output Format
+<relevance_scores>
+CHUNK_1:
+- ID: [chunk identifier]
+- Scores: Topic=X, Answer=Y, Quality=Z, Fresh=W
+- COMPOSITE: [weighted average]
+- KEEP: YES | NO | MAYBE
+- Rationale: [One sentence explanation]
+
+[Repeat for each chunk]
+
+RECOMMENDED_ORDER: [Chunk IDs in order of relevance]
+
+EXCLUDE: [Chunk IDs to drop, with reasons]
+
+GAPS: [What information is missing that would help answer the query]
+</relevance_scores>
+
+Be selective. Including irrelevant chunks degrades response quality.`
+            },
+            {
+                id: 17,
+                title: "Answer Synthesizer",
+                category: "rag",
+                categoryLabel: "RAG Patterns",
+                description: "Generates coherent answers from multiple retrieved chunks. The final stage of a RAG pipeline.",
+                variables: ["QUERY", "RANKED_CHUNKS", "RESPONSE_GUIDELINES"],
+                prompt: `Synthesize an answer from the retrieved information.
+
+# User Query
+{{QUERY}}
+
+# Retrieved Context (ranked by relevance)
+{{RANKED_CHUNKS}}
+
+# Response Guidelines
+{{RESPONSE_GUIDELINES}}
+
+# Synthesis Instructions
+1. Identify key information across chunks
+2. Resolve any contradictions (prefer higher-ranked sources)
+3. Synthesize into a coherent, direct answer
+4. Cite sources for specific claims
+5. Acknowledge gaps or uncertainties
+
+# Answer Format
+<answer>
+[Direct answer to the query, written naturally]
+
+Sources:
+- [Claim]: [Chunk ID/Source]
+- [Claim]: [Chunk ID/Source]
+</answer>
+
+<confidence>
+LEVEL: HIGH | MEDIUM | LOW
+REASONING: [Why this confidence level]
+GAPS: [What information was missing or uncertain]
+</confidence>
+
+# Rules
+- Never invent information not in the chunks
+- Say "I don't have enough information" if chunks are insufficient
+- Don't over-qualify every statement
+- Be direct and helpful
+
+Answer the question as asked. Don't pad with unnecessary context.`
+            },
+
+            // Business Automation
+            {
+                id: 18,
+                title: "Email Classifier",
+                category: "business",
+                categoryLabel: "Business Automation",
+                description: "Categorizes incoming emails by intent and priority. Foundation for email automation workflows.",
+                variables: ["EMAIL_CONTENT", "CLASSIFICATION_SCHEMA", "ROUTING_RULES"],
+                prompt: `Classify the following email for automated routing.
+
+# Email Content
+{{EMAIL_CONTENT}}
+
+# Classification Schema
+{{CLASSIFICATION_SCHEMA}}
+
+# Routing Rules
+{{ROUTING_RULES}}
+
+# Classification Tasks
+1. PRIMARY_INTENT: What does the sender want?
+2. CATEGORY: Which predefined category fits best?
+3. PRIORITY: How urgent is this?
+4. SENTIMENT: What's the emotional tone?
+5. ACTION_REQUIRED: What response is needed?
+
+# Output Format
+<classification>
+PRIMARY_INTENT: [e.g., "Request for quote", "Complaint", "Information request"]
+
+CATEGORY: [From schema]
+CONFIDENCE: [0-100]%
+
+PRIORITY: URGENT | HIGH | NORMAL | LOW
+PRIORITY_SIGNALS: [What indicated this priority]
+
+SENTIMENT: POSITIVE | NEUTRAL | NEGATIVE | ANGRY
+SENTIMENT_INDICATORS: [Key phrases]
+
+ACTION_REQUIRED:
+- Type: [REPLY | FORWARD | ARCHIVE | ESCALATE | SCHEDULE]
+- Suggested Response: [Brief template or approach]
+- Deadline: [If time-sensitive]
+
+ROUTING: [Based on routing rules]
+
+KEY_ENTITIES:
+- Customer: [If identifiable]
+- Products/Services: [If mentioned]
+- Dates/Deadlines: [If mentioned]
+</classification>
+
+When uncertain between categories, choose the one requiring faster response.`
+            },
+            {
+                id: 19,
+                title: "Document Parser",
+                category: "business",
+                categoryLabel: "Business Automation",
+                description: "Extracts structured data from unstructured documents. Use for invoice processing, contract analysis, etc.",
+                variables: ["DOCUMENT_TEXT", "EXTRACTION_SCHEMA", "DOCUMENT_TYPE"],
+                prompt: `Extract structured data from the following document.
+
+# Document Type
+{{DOCUMENT_TYPE}}
+
+# Document Text
+{{DOCUMENT_TEXT}}
+
+# Extraction Schema
+{{EXTRACTION_SCHEMA}}
+
+# Extraction Rules
+1. Extract only fields defined in the schema
+2. Preserve original values (don't convert units, currencies, etc.)
+3. Mark uncertain extractions
+4. Note if required fields are missing
+5. Handle multiple instances (e.g., line items)
+
+# Output Format
+<extracted_data>
+{
+  "document_type": "{{DOCUMENT_TYPE}}",
+  "extraction_confidence": 0.XX,
+  "fields": {
+    "field_name": {
+      "value": "extracted value",
+      "confidence": 0.XX,
+      "source_text": "original text snippet",
+      "location": "page/section if known"
+    }
+  },
+  "line_items": [
+    {
+      "item": "...",
+      "quantity": "...",
+      "price": "..."
+    }
+  ],
+  "missing_required_fields": ["field1", "field2"],
+  "warnings": ["any extraction concerns"]
+}
+</extracted_data>
+
+# Quality Checks
+- Verify numbers add up (e.g., line items = total)
+- Check date formats are consistent
+- Flag any anomalies
+
+If the document doesn't match the expected type, stop and report the mismatch.`
+            },
+            {
+                id: 20,
+                title: "Meeting Summarizer",
+                category: "business",
+                categoryLabel: "Business Automation",
+                description: "Creates structured summaries from meeting transcripts. Captures decisions, action items, and key discussions.",
+                variables: ["TRANSCRIPT", "ATTENDEES", "MEETING_TYPE"],
+                prompt: `Summarize the following meeting transcript.
+
+# Meeting Type
+{{MEETING_TYPE}}
+
+# Attendees
+{{ATTENDEES}}
+
+# Transcript
+{{TRANSCRIPT}}
+
+# Summary Requirements
+Extract and organize:
+1. KEY_DECISIONS: What was decided?
+2. ACTION_ITEMS: Who does what by when?
+3. DISCUSSION_HIGHLIGHTS: Important points raised
+4. OPEN_QUESTIONS: Unresolved issues
+5. NEXT_STEPS: What happens after this meeting?
+
+# Output Format
+<meeting_summary>
+MEETING: {{MEETING_TYPE}}
+DATE: [From transcript if available]
+DURATION: [Approximate]
+
+## Decisions Made
+- [Decision 1]
+- [Decision 2]
+
+## Action Items
+| Owner | Task | Deadline |
+|-------|------|----------|
+| [Name] | [Task] | [Date] |
+
+## Key Discussion Points
+1. [Topic]: [Summary of discussion and outcome]
+2. [Topic]: [Summary of discussion and outcome]
+
+## Open Questions
+- [Question 1] - Assigned to: [Name/TBD]
+- [Question 2] - Assigned to: [Name/TBD]
+
+## Next Steps
+- [Next meeting/milestone]
+- [Follow-up items]
+
+## Parking Lot (for future discussion)
+- [Items deferred]
+</meeting_summary>
+
+Be concise. Executives should be able to skim this in 2 minutes.`
+            }
+        ];
+
+        // Render templates
+        function renderTemplates(filter = 'all', searchTerm = '') {
+            const grid = document.getElementById('templates-grid');
+            const emptyState = document.getElementById('empty-state');
+            
+            let filtered = templates;
+            
+            if (filter !== 'all') {
+                filtered = filtered.filter(t => t.category === filter);
+            }
+            
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                filtered = filtered.filter(t => 
+                    t.title.toLowerCase().includes(term) ||
+                    t.description.toLowerCase().includes(term) ||
+                    t.categoryLabel.toLowerCase().includes(term) ||
+                    t.prompt.toLowerCase().includes(term)
+                );
+            }
+            
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            
+            grid.innerHTML = filtered.map(t => `
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden card-hover transition-all duration-200 fade-in">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">${t.categoryLabel}</span>
+                            <button onclick="copyPrompt(${t.id})" class="text-slate-400 hover:text-blue-600 transition-colors" title="Copy to clipboard">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">${t.title}</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-2">${t.description}</p>
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            ${t.variables.map(v => `<span class="variable">{{${v}}}</span>`).join(' ')}
+                        </div>
+                        <button onclick="openModal(${t.id})" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-colors text-sm">
+                            View Full Template
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Copy functionality
+        function copyPrompt(id) {
+            const template = templates.find(t => t.id === id);
+            navigator.clipboard.writeText(template.prompt).then(() => {
+                showNotification();
+            });
+        }
+
+        function copyFromModal() {
+            const prompt = document.getElementById('modal-prompt').textContent;
+            navigator.clipboard.writeText(prompt).then(() => {
+                showNotification();
+            });
+        }
+
+        function showNotification() {
+            const notif = document.getElementById('copy-notification');
+            notif.classList.remove('hidden');
+            notif.classList.add('copy-notification');
+            setTimeout(() => {
+                notif.classList.add('hidden');
+                notif.classList.remove('copy-notification');
+            }, 2000);
+        }
+
+        // Modal functionality
+        function openModal(id) {
+            const template = templates.find(t => t.id === id);
+            document.getElementById('modal-title').textContent = template.title;
+            document.getElementById('modal-category').textContent = template.categoryLabel;
+            document.getElementById('modal-description').textContent = template.description;
+            document.getElementById('modal-variables').innerHTML = template.variables.map(v => 
+                `<span class="variable">{{${v}}}</span>`
+            ).join(' ');
+            document.getElementById('modal-prompt').textContent = template.prompt;
+            document.getElementById('template-modal').classList.remove('hidden');
+            document.getElementById('template-modal').classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('template-modal').classList.add('hidden');
+            document.getElementById('template-modal').classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Event listeners
+        document.getElementById('category-filters').addEventListener('click', (e) => {
+            const btn = e.target.closest('.category-btn');
+            if (btn) {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderTemplates(btn.dataset.category, document.getElementById('search-input').value);
+            }
+        });
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+            renderTemplates(activeCategory, e.target.value);
+        });
+
+        document.getElementById('template-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('template-modal')) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Initial render
+        renderTemplates();
+    </script>
+</body>
+</html>
